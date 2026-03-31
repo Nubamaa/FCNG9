@@ -1,12 +1,28 @@
 # Arduino IDE Developer: Firmware & Edge Computing
 
+## Architecture Overview: STAR TOPOLOGY (5 Nodes → 1 Server)
+
+**YOUR ROLE:** Program each of the **5 Arduino nodes** with firmware that autonomously:
+1. Reads DHT11 (temperature, humidity) and LDR (light level)
+2. Performs edge computing: checks if daytime before transmitting
+3. Sends HTTP POST to the **SAME central Backend server** (192.168.1.100:3000)
+
+**All 5 Arduinos send data to ONE server:**
+```
+Arduino 001 (North_Field)      ┐
+Arduino 002 (Tomato_Greenhouse)├──→ Central Backend Server
+Arduino 003 (East_Garage)      │    192.168.1.100:3000
+Arduino 004 (South_Storage)    │    (Single Point of Reference)
+Arduino 005 (West_Shed)        ┘
+```
+
 ## Role Overview
 You are the **firmware engineer**. Your responsibility is to program the Arduino microcontroller with intelligent sensor drivers and edge computing logic. Each Arduino node will:
 1. Read sensor data from DHT11 (temperature, humidity) and LDR (light level)
 2. Perform local computation: check if it's daytime using the LDR
 3. **Only transmit crop data if daytime** (edge computing — reduce data deluge)
 4. Assign a unique Sensor ID and Location Name to each node
-5. Send HTTP requests to the central Backend server with structured JSON payloads
+5. Send HTTP requests to **the SAME central Backend server** (all 5 nodes use identical server IP:port)
 
 ---
 

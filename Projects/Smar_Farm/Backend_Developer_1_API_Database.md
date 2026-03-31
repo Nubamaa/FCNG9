@@ -1,7 +1,55 @@
 # Backend Developer 1: REST API & Database Design
 
+## Architecture Overview: STAR TOPOLOGY
+
+```
+                  ╔═══════════════════════════════════════╗
+                  ║   CENTRAL BACKEND SERVER              ║
+                  ║   (PostgreSQL + REST API)             ║
+                  ║   IP: 192.168.1.100:3000              ║
+                  ║   Receives data from ALL 5 nodes      ║
+                  ║   Stores in ONE database              ║
+                  ╚═══════════════════════════════════════╝
+                     ▲     ▲     ▲     ▲     ▲
+                     │     │     │     │     │
+        ┌────────────┼─────┼─────┼─────┼─────┼──────────┐
+        │            │     │     │     │     │          │
+   ┌────┴────┐  ┌────┴────┐ ┌────┴────┐ ┌────┴────┐ ┌───┴─────┐
+   │ Arduino  │  │ Arduino │ │ Arduino │ │ Arduino │ │ Arduino │
+   │  Node 1  │  │  Node 2 │ │  Node 3 │ │  Node 4 │ │ Node 5  │
+   │          │  │         │ │         │ │         │ │         │
+   │  Sensor  │  │ Sensor  │ │ Sensor  │ │ Sensor  │ │ Sensor  │
+   │  ID: 001 │  │ ID: 002 │ │ ID: 003 │ │ ID: 004 │ │ ID: 005 │
+   │          │  │         │ │         │ │         │ │         │
+   │North_    │  │Tomato_  │ │ East_   │ │ South_  │ │ West_   │
+   │Field     │  │Green-   │ │ Garage  │ │Storage  │ │ Shed    │
+   │          │  │house    │ │         │ │         │ │         │
+   └────┬─────┘  └────┬────┘ └────┬────┘ └────┬────┘ └───┬─────┘
+        │             │           │           │          │
+        └─ HTTP POST ─┴─ HTTP POST ──┬─ HTTP POST ─ HTTP POST ─┘
+                                     │
+                  POST /api/sensors/data (JSON payload)
+                  from ALL 5 Arduinos send to SAME server
+                                     │
+                              ┌──────┴──────┐
+                              │  Database   │
+                              │  (ONE DB)   │
+                              │  All data   │
+                              │  consolidated
+                              └─────────────┘
+```
+
+**KEY ARCHITECTURE POINTS:**
+- **Single Backend Server:** All 5 Arduino nodes connect to **ONE central server** (not distributed)
+- **Same IP:Port:** All Arduinos configured with identical server IP (192.168.1.100) and port (3000)
+- **Centralized Database:** All sensor data from 5 locations stored in **ONE PostgreSQL database**
+- **Star Topology:** Each node connects only to the center hub (Backend server), NO direct node-to-node communication
+- **Data Hub:** Backend server is the single point where all farm data converges
+
+---
+
 ## Role Overview
-You are the **backend infrastructure architect**. Your responsibility is to build the central farm server that receives sensor data from Arduino nodes, stores it in a time-series database, and exposes REST API endpoints for the Frontend to consume. You are the first backend member to start; your database schema and API contract will unblock **Backend Developer 2**, **Frontend Developer**, and indirectly **Arduino IDE Developer**.
+You are the **backend infrastructure architect**. Your responsibility is to build the **ONE central farm server** that receives sensor data from all **5 Arduino nodes**, stores it in a time-series database, and exposes REST API endpoints for the Frontend to consume. You are the first backend member to start; your database schema and API contract will unblock **Backend Developer 2**, **Frontend Developer**, and indirectly **Arduino IDE Developer**.
 
 ---
 

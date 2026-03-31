@@ -1,7 +1,49 @@
 # Backend Developer 2: Data Pipeline & Analytics
 
+## Architecture Overview: STAR TOPOLOGY DATA PROCESSING
+
+**YOUR ROLE:** Process real-time data from **ONE Backend server** that receives feeds from ALL **5 Arduino sensor nodes** and trigger intelligent alerts based on anomaly detection.
+
+```
+All 5 Arduino Nodes
+(001: North_Field, 002: Tomato_Greenhouse, 003: East_Garage,
+ 004: South_Storage, 005: West_Shed)
+           │
+           ▼  POST sensor data every 5 seconds
+    ┌──────────────────────┐
+    │  Backend API Server  │  (Backend Dev 1)
+    │  192.168.1.100:3000  │
+    │  (Single server)     │
+    └──────┬───────────────┘
+           │
+           ▼  Raw data stored
+    ┌──────────────────────┐
+    │  PostgreSQL Database │  (ONE centralized database)
+    │  sensor_data table   │
+    └──────┬───────────────┘
+           │
+           ▼  Real-time monitoring
+    ┌──────────────────────┐
+    │ YOUR PIPELINE        │
+    │ (Real-time Processor)│  ← YOU WORK HERE
+    │                      │
+    │ • Validate rules     │
+    │ • Detect anomalies   │
+    │ • Trigger alerts     │
+    │ • Aggregate data     │
+    └──────┬───────────────┘
+           │
+           ▼  WebSocket alert stream
+    ┌──────────────────────┐
+    │  Frontend Dashboard  │  (displays all 5 nodes)
+    │  + Email/SMS alerts  │
+    └──────────────────────┘
+```
+
+**KEY POINT:** You process data from ONE consolidated database that contains sensor readings from ALL 5 Arduino nodes.
+
 ## Role Overview
-You are the **data processor and monitoring engineer**. While Backend Developer 1 focuses on receiving and storing raw sensor data, your responsibility is to process that data in real-time, detect anomalies, trigger alerts, and perform analysis. You will work closely with Backend Dev 1 (shared database access) and feed alert events to the Frontend in real-time.
+You are the **data processor and monitoring engineer**. While Backend Developer 1 focuses on receiving and storing raw sensor data from all **5 Arduino nodes** into **ONE database**, your responsibility is to process that data in real-time, detect anomalies, trigger alerts, and perform analysis. You will work closely with Backend Dev 1 (shared database access) and feed alert events to the Frontend in real-time.
 
 ---
 

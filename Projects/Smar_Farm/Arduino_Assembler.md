@@ -1,7 +1,52 @@
 # Arduino Assembler: Hardware Integration & Testing
 
+## Architecture Overview: STAR TOPOLOGY - 5 NODES TO 1 SERVER
+
+**YOUR MISSION:** Build and test **5 physical Arduino sensor nodes**, each deployed to a different farm location, all sending data to **ONE central Backend server**.
+
+```
+FARM LOCATIONS (5 Sites):                CENTRAL SERVER:
+┌─────────────────────┐
+│ Node 001 (Sensor)   │ North_Field
+│ DHT11 + LDR         │                  ┌─────────────────────┐
+│ WiFi → 192.168.1.100│ ─────────────→  │  Backend Server     │
+└─────────────────────┘                  │ 192.168.1.100:3000 │
+                                         │                     │
+┌─────────────────────┐                  │  ONE Database:      │
+│ Node 002           │ Tomato_Greenhouse│  - All 5 node data  │
+│ DHT11 + LDR        │ ─────────────→  │  - Consolidated   │
+│ WiFi → 192.168.1.100│                  │  - One location     │
+└─────────────────────┘                  └─────────────────────┘
+                                               ▲
+┌─────────────────────┐                        │
+│ Node 003           │ East_Garage             │
+│ DHT11 + LDR        │ ─────────────→ ─────────┘
+│ WiFi → 192.168.1.100│
+└─────────────────────┘
+
+┌─────────────────────┐
+│ Node 004           │ South_Storage
+│ DHT11 + LDR        │ ─────────────→ ─────────┐
+│ WiFi → 192.168.1.100│                        │
+└─────────────────────┘                        │
+                                               │
+┌─────────────────────┐                        │
+│ Node 005           │ West_Shed              │
+│ DHT11 + LDR        │ ─────────────→ ─────────┘
+│ WiFi → 192.168.1.100│
+└─────────────────────┘
+
+KEY POINTS:
+✓ Same server IP:port for ALL 5 Arduinos (192.168.1.100:3000)
+✓ Each node has UNIQUE Sensor ID (001-005)
+✓ Each node has UNIQUE Location Name
+✓ All nodes send HTTP POST to THE SAME server
+✓ No node-to-node communication
+✓ One consolidated database for all farm data
+```
+
 ## Role Overview
-You are the **hardware engineer and integration specialist**. Your responsibility is to physically build each sensor node by assembling electronic components, flashing the Arduino IDE firmware onto the boards, and rigorously testing that each node works end-to-end before deployment. You are the critical link between software (firmware, backend) and the real physical farm.
+You are the **hardware engineer and integration specialist**. Your responsibility is to physically build each of the **5 sensor nodes** by assembling electronic components, flashing the Arduino IDE firmware onto each board with unique configurations, and rigorously testing that each node works end-to-end before deployment to its assigned farm location. Each node will connect to the **SAME central Backend server** (all 5 share identical server address: 192.168.1.100:3000).
 
 ---
 

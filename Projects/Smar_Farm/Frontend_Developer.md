@@ -1,7 +1,47 @@
 # Frontend Developer: Smart Agriculture IoT Dashboard
 
+## Architecture Overview: STAR TOPOLOGY DASHBOARD
+
+**YOUR ROLE:** Build a **single unified dashboard** that displays data from all **5 Arduino sensor nodes** connected to **ONE central Backend server**.
+
+```
+Windows/Mac/Linux Browser
+           │
+           ▼
+    ┌──────────────┐
+    │   Frontend   │
+    │  Dashboard   │     Displays data from:
+    │  (React/Vue/ │     • Node 001 (North_Field)
+    │   Angular)   │     • Node 002 (Tomato_Greenhouse)
+    │              │     • Node 003 (East_Garage)
+    └──────┬───────┘     • Node 004 (South_Storage)
+           │             • Node 005 (West_Shed)
+    Uses  │ GET /api endpoints
+   REST API
+           ▼
+    ┌──────────────────┐
+    │  Backend Server  │
+    │  192.168.1.100   │
+    │  port 3000       │
+    │                  │
+    │  Receives from   │
+    │  ALL 5 Arduinos  │
+    └──────┬───────────┘
+           │
+           ▼
+    ┌──────────────┐
+    │   Database   │
+    │  (ONE DB)    │
+    │  Consolidated
+    │  data from   │
+    │  5 locations │
+    └──────────────┘
+```
+
 ## Role Overview
-You are building the **web-based monitoring dashboard** for the smart farm network. Your responsibility is to create a real-time, responsive interface where farm operators can view sensor data (temperature, humidity, light levels) from multiple field locations and understand the health of the crop ecosystem.
+You are building the **web-based monitoring dashboard** for the smart farm network. Your responsibility is to create a real-time, responsive interface where farm operators can view sensor data (temperature, humidity, light levels) from **all 5 field locations** in one place and understand the health of the crop ecosystem.
+
+The dashboard receives data from **ONE Backend server** that consolidates inputs from all **5 Arduino nodes** deployed across the farm.
 
 ---
 
